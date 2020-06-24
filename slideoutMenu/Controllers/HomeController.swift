@@ -22,17 +22,30 @@ class HomeController: UITableViewController {
     @objc func handleOpen() {
         let mainWindow = UIApplication.shared.keyWindow
 
-        menuController.view.frame = CGRect(x: 0, y: 0, width: 300, height: self.view.frame.height)
+        // Setup initial position of menu off-screen
+        menuController.view.frame = CGRect(x: -menuWidth, y: 0, width: menuWidth, height: self.view.frame.height)
         
         mainWindow?.addSubview(menuController.view)
+        
+        // Animate menu from the left into users' view
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.menuController.view.transform = CGAffineTransform(translationX: self.menuWidth, y: 0)
+        })
         
         addChild(menuController)
     }
     
     @objc func handleHide() {
-        menuController.view.removeFromSuperview()
-        menuController.removeFromParent()
+        // Animate menu to the left to hide from users' view
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.menuController.view.transform = .identity
+        })
+        
+//        menuController.view.removeFromSuperview()
+//        menuController.removeFromParent()
     }
+    
+    fileprivate let menuWidth: CGFloat = 300
     
     fileprivate func setupNavigationItems() {
         navigationItem.title = "Home"
