@@ -10,6 +10,8 @@ import UIKit
 
 class HomeController: UITableViewController {
     
+    let menuController = MenuController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,16 +20,18 @@ class HomeController: UITableViewController {
     }
     
     @objc func handleOpen() {
-        let viewController = MenuController()
         let mainWindow = UIApplication.shared.keyWindow
 
-        viewController.view.frame = CGRect(x: 0, y: 0, width: 300, height: self.view.frame.height)
+        menuController.view.frame = CGRect(x: 0, y: 0, width: 300, height: self.view.frame.height)
         
-        mainWindow?.addSubview(viewController.view)
+        mainWindow?.addSubview(menuController.view)
+        
+        addChild(menuController)
     }
     
     @objc func handleHide() {
-        print("hiding menu")
+        menuController.view.removeFromSuperview()
+        menuController.removeFromParent()
     }
     
     fileprivate func setupNavigationItems() {
@@ -43,7 +47,7 @@ class HomeController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cellId")
         
-        cell.textLabel?.text = "Row \(indexPath.row)"
+        cell.textLabel?.text = "Menu row: \(indexPath.row)"
         
         return cell
     }

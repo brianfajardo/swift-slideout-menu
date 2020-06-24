@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  slideoutMenu
 //
-//  Created by Brian Fajardo on 6/22/20.
+//  Created by Brian Fajardo on 2020-06-24.
 //  Copyright © 2020 Brian Fajardo. All rights reserved.
 //
 
@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Bypass the Storyboard
         window = UIWindow()
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        window?.rootViewController = UINavigationController(rootViewController: HomeController())
         
         return true
     }
