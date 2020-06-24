@@ -19,6 +19,13 @@ class ViewController: UITableViewController {
     
     @objc func handleOpen() {
         print("opening menu")
+        
+        let viewController = MenuController()
+        let mainWindow = UIApplication.shared.keyWindow
+
+        viewController.view.frame = CGRect(x: 0, y: 0, width: 300, height: self.view.frame.height)
+        
+        mainWindow?.addSubview(viewController.view)
     }
     
     @objc func handleHide() {
