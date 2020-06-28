@@ -19,6 +19,9 @@ class HomeController: UITableViewController {
         setupMenuController()
         
         tableView.backgroundColor = UIColor.red
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        view.addGestureRecognizer(panGesture)
     }
     
     @objc func handleOpen() {
@@ -29,6 +32,27 @@ class HomeController: UITableViewController {
         performAnimations(withTransformTo: .identity)
     }
     
+    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .changed:
+            let translation = gesture.translation(in: view)
+            var x = translation.x
+            
+            // Clamping x value to keep menuController and navigationController views in bounds
+            x = min(menuWidth, x)
+            x = max(0, x)
+            
+            let transformation = CGAffineTransform(translationX: x, y: 0)
+            
+            menuController.view.transform = transformation
+            navigationController?.view.transform = transformation
+        case .ended:
+            handleOpen()
+        default:
+            return
+        }
+    }
+    
     // MARK:- Fileprivate
     
     fileprivate let menuWidth: CGFloat = 300
@@ -36,6 +60,7 @@ class HomeController: UITableViewController {
     fileprivate func performAnimations(withTransformTo transformation: CGAffineTransform) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.menuController.view.transform = transformation
+            self.navigationController?.view.transform = transformation
         })
     }
     
